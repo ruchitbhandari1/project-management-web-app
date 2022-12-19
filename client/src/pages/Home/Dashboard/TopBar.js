@@ -38,7 +38,6 @@ function TopBar() {
   useEffect(() => {
     async function fetchOrgData() {
       if (!selectedOrgId) {
-        console.log("No org selected");
         return;
       }
       const response = await getOrgData(selectedOrgId);
@@ -47,7 +46,7 @@ function TopBar() {
     fetchOrgData();
   }, [selectedOrgId]);
 
-  function isAdmin(value) {
+  function showRequestIfAdmin(value) {
     if (value !== "requests") {
       return true;
     }
@@ -63,7 +62,7 @@ function TopBar() {
               <TabsHeader className="bg-gray-300">
                 {tabs.map(
                   ({ label, value }) =>
-                    isAdmin(value) && (
+                    showRequestIfAdmin(value) && (
                       <Tab key={value} value={value}>
                         {label}
                       </Tab>
@@ -73,8 +72,8 @@ function TopBar() {
               <TabsBody className="bg-white">
                 {tabs.map(
                   ({ value, component }) =>
-                    isAdmin(value) && (
-                      <TabPanel  key={value} value={value}>
+                    showRequestIfAdmin(value) && (
+                      <TabPanel key={value} value={value}>
                         {component}
                       </TabPanel>
                     )

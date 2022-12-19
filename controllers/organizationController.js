@@ -78,10 +78,14 @@ exports.requestToJoin = catchAsync(async function (req, res, next) {
 })
 
 exports.getRequests = catchAsync(async function (req, res, next) {
+    const userId = req.user.id;
     const orgId = req.params.orgId;
     const org = await OrgObj.findById(orgId);
     if (!org) {
         return next(new Error("No organization found with that ID"));
+    }
+    if (!org.admin.includes(userId)){
+        return next(new Error("You are not an admin of this organization"));
     }
     const requests = org.requests;
     res.status(200).json({

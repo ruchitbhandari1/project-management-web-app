@@ -31,7 +31,6 @@ async function joinOrg(orgId){
       Authorization: `Bearer ${jwt}`,
     },
   }).then((res) => res.json());
-  console.log(response);
   return response;
 }
 
@@ -82,4 +81,16 @@ async function rejectRequest(orgId, userId){
   return response;
 }
 
-export { getMyOrgs, getOrgs, joinOrg, createOrg, getOrgData, acceptRequest, rejectRequest}
+async function getRequests(orgId){
+  const jwt = localStorage.getItem("jwt");
+  const response = await fetch(`${URL}/api/org/getRequests/${orgId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+  }).then((res) => res.json());
+  return response;
+}
+
+export { getMyOrgs, getOrgs, joinOrg, createOrg, getOrgData, acceptRequest, rejectRequest, getRequests}

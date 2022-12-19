@@ -2,7 +2,7 @@ import React from "react";
 import { AuthContext } from "../../../context/AuthProvider";
 import { useContext } from "react";
 import { useEffect, useState, useCallback } from "react";
-import { getOrgData, acceptRequest, rejectRequest } from "../../../Fetch/Organizations";
+import { acceptRequest, rejectRequest, getRequests } from "../../../Fetch/Organizations";
 import { Button } from "@material-tailwind/react";
 
 function Requests() {
@@ -12,18 +12,17 @@ function Requests() {
   const fetchRequests = useCallback(
     async function () {
       if (!selectedOrgId) return;
-      const response = await getOrgData(selectedOrgId);
-      setRequests(response.data.org.requests);
+      const response = await getRequests(selectedOrgId);
+      if(response.status !== "success"){
+        return;
+      }
+      setRequests(response.data.requests);
     },
     [selectedOrgId]
   );
   useEffect(() => {
     fetchRequests();
   }, [fetchRequests]);
-
-  useEffect(() => {
-    console.log("called");
-  }, []);
 
   function handleAccept(userId) {
     async function accept() {
@@ -38,7 +37,6 @@ function Requests() {
   function handleReject(userId) {
     async function reject() {
       const response = await rejectRequest(selectedOrgId, userId);
-      console.log(response);
       if (response.status === "success") {
         fetchRequests();
       }
