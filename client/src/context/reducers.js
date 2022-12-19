@@ -6,6 +6,8 @@ export const authReducer = (state, action) => {
       return { ...state, user: action.payload };
     case "SET_SELECTED_ORG_ID":
       return { ...state, selectedOrgId: action.payload };
+    case "SET_SELECTED_PROJECT_ID":
+      return {...state, selectedProjectId: action.payload};
     default:
       return state;
   }

@@ -2,6 +2,47 @@ const catchAsync = require("../utils/catchAsync");
 const OrgObj = require("../models/orgModel");
 const { default: mongoose } = require("mongoose");
 
+exports.getAllOrganizations = catchAsync(async function (req, res, next) {
+  const search = req.query.search;
+  let orgs = await OrgObj.find();
+  orgs = orgs.filter((org) => {
+    return org.name.toLowerCase().includes(search.toLowerCase());
+  });
+  res.status(200).json({
+    status: "success",
+    data: {
+      orgs,
+    },
+  });
+});
+
+exports.getOrganization = catchAsync(async function (req, res, next) {
+  const orgId = req.params.orgId;
+  const org = await OrgObj.findById(orgId);
+  if (!org) {
+    return next(new Error("No organization found with that ID"));
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      org,
+    },
+  });
+});
+
+exports.getMyOrganizations = catchAsync(async function (req, res, next) {
+  const userId = req.user.id;
+  const orgs = await OrgObj.find({
+    members: mongoose.Types.ObjectId(userId),
+  });
+  res.status(200).json({
+    status: "success",
+    data: {
+      orgs,
+    },
+  });
+});
+
 exports.createOrganization = catchAsync(async function (req, res, next) {
     const newOrg = {
         name: req.body.name,
@@ -17,65 +58,24 @@ exports.createOrganization = catchAsync(async function (req, res, next) {
     })
 })
 
-exports.getMyOrganizations = catchAsync(async function (req, res, next) {
-    const userId = req.user.id;
-    const orgs = await OrgObj.find({
-        members: mongoose.Types.ObjectId(userId)
-    })
-    res.status(200).json({
-        status: "success",
-        data: {
-            orgs,
-        }
-    })
-})
-
-exports.getOrganization = catchAsync(async function (req, res, next) {
-    const orgId = req.params.orgId;
-    const org = await OrgObj.findById(orgId);
-    if (!org) {
-        return next(new Error("No organization found with that ID"));
-    }
-    res.status(200).json({
-        status: "success",
-        data: {
-            org,
-        }
-    })
-})
-
-exports.getAllOrganizations = catchAsync(async function (req, res, next) {
-    const search = req.query.search;
-    let orgs = await OrgObj.find()
-    orgs = orgs.filter((org) => {
-        return org.name.toLowerCase().includes(search.toLowerCase());
-    })
-    res.status(200).json({
-        status: "success",
-        data: {
-            orgs,
-        }
-    })
-})
-
 exports.requestToJoin = catchAsync(async function (req, res, next) {
-    const orgId = req.params.orgId;
-    const userId = req.user.id;
-    const org = await OrgObj.findById(orgId);
-    if (!org) {
-        return next(new Error("No organization found with that ID"));
-    }
-    org.requests.push({
-        userId: mongoose.Types.ObjectId(userId),
-        name: req.user.name,
-        email: req.user.email,
-    });
-    await org.save();
-    res.status(200).json({
-        status: "success",
-        data: {}
-    })
-})
+  const orgId = req.params.orgId;
+  const userId = req.user.id;
+  const org = await OrgObj.findById(orgId);
+  if (!org) {
+    return next(new Error("No organization found with that ID"));
+  }
+  org.requests.push({
+    userId: mongoose.Types.ObjectId(userId),
+    name: req.user.name,
+    email: req.user.email,
+  });
+  await org.save();
+  res.status(200).json({
+    status: "success",
+    data: {},
+  });
+});
 
 exports.getRequests = catchAsync(async function (req, res, next) {
     const userId = req.user.id;

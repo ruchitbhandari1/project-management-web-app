@@ -14,7 +14,7 @@ function AuthProvider({ children }) {
   // Verify user on page load
   async function verifyUser(jwt) {
     const response = await fetch(`${URL}/api/auth/verify`, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
@@ -77,6 +77,12 @@ function AuthProvider({ children }) {
 
   // logout
   async function logout() {
+    await fetch(`${URL}/api/auth/logout`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     localStorage.removeItem("jwt");
     dispatch({ type: "SET_USER", payload: null });
   }
@@ -85,9 +91,13 @@ function AuthProvider({ children }) {
     dispatch({ type: "SET_SELECTED_ORG_ID", payload: orgId });
   }
 
+  function setSelectedProjectId(projectId){
+    dispatch({type: "SET_SELECTED_PROJECT_ID", payload: projectId});
+  }
+
   return (
     <AuthContext.Provider
-      value={{ ...state, login, signup, logout, setSelectedOrgId }}
+      value={{ ...state, login, signup, logout, setSelectedOrgId, setSelectedProjectId }}
     >
       {children}
     </AuthContext.Provider>

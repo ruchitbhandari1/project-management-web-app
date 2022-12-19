@@ -9,9 +9,9 @@ router.get('/get/:orgId', organizationController.getOrganization)
 
 router.use(authController.protect);
 router.get('/getMy', organizationController.getMyOrganizations);
+router.post('/create', organizationController.createOrganization);
 router.get('/requestToJoin/:orgId', organizationController.requestToJoin);
 
-router.post('/create', organizationController.createOrganization);
 router.get("/getRequests/:orgId", organizationController.getRequests);
 router.get(
   "/acceptRequest/:orgId/:userId",

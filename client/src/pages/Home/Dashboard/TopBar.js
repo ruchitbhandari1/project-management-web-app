@@ -8,7 +8,7 @@ import {
 } from "@material-tailwind/react";
 import Requests from "./Requests";
 import Details from "./Details";
-import Projects from "./Projects";
+import Projects from "./Projects/Projects";
 import { AuthContext } from "../../../context/AuthProvider";
 import { useContext, useState } from "react";
 import { getOrgData } from "../../../Fetch/Organizations";
@@ -69,11 +69,11 @@ function TopBar() {
                     )
                 )}
               </TabsHeader>
-              <TabsBody className="bg-white">
+              <TabsBody className="">
                 {tabs.map(
                   ({ value, component }) =>
                     showRequestIfAdmin(value) && (
-                      <TabPanel key={value} value={value}>
+                      <TabPanel className="p-0 mt-3" key={value} value={value}>
                         {component}
                       </TabPanel>
                     )
