@@ -14,14 +14,14 @@ function App() {
   return (
     <div className="App">
       {isAuthReady && (
-        <>
+        <div className="flex flex-col h-screen">
           <Navbar />
           <AuthRoutes />
           <ToastContainer
             position="top-center"
             pauseOnFocusLoss={false}
            />
-        </>
+        </div>
       )}
     </div>
   );

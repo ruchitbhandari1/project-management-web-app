@@ -81,8 +81,14 @@ function AuthProvider({ children }) {
     dispatch({ type: "SET_USER", payload: null });
   }
 
+  function setSelectedOrgId(orgId) {
+    dispatch({ type: "SET_SELECTED_ORG_ID", payload: orgId });
+  }
+
   return (
-    <AuthContext.Provider value={{ ...state, login, signup, logout }}>
+    <AuthContext.Provider
+      value={{ ...state, login, signup, logout, setSelectedOrgId }}
+    >
       {children}
     </AuthContext.Provider>
   );

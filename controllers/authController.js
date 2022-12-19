@@ -46,6 +46,7 @@ exports.login = catchAsync(async function (req, res, next) {
     });
 })
 
+// verify is used to verify the token and get the user data and send it back to the client
 exports.verify = catchAsync(async function (req, res, next) {
     const accessToken = req.headers.authorization;
     if (!accessToken) {
@@ -57,13 +58,28 @@ exports.verify = catchAsync(async function (req, res, next) {
     if (!user) {
         return next(new Error("User not found"));
     }
-    req.user = user;
     res.status(200).json({
         status: "success",
         data: {
             user,
         },
     });
+})
+
+// protect is used to verify the token and get the user data and give it to the next middleware
+exports.protect = catchAsync(async function (req, res, next) {
+    const accessToken = req.headers.authorization;
+    if (!accessToken) {
+        return next(new Error("You are not logged in"));
+    }
+    const token = accessToken.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await UserObj.findById(decoded._id);
+    if (!user) {
+        return next(new Error("User not found"));
+    }
+    req.user = user;
+    next();
 })
 
 exports.logout = catchAsync(async function (req, res, next) {

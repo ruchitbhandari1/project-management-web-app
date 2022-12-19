@@ -1,4 +1,4 @@
 vars
 node_modules
-mistakes.txt
+*.txt
 requests.rest
