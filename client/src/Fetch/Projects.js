@@ -51,4 +51,20 @@ async function removeMember(projectId, memberId) {
   return response;
 }
 
-export { getMyOrgProjects, getProjectData, addNewMember, removeMember };
+async function addNewProject({ name, description, orgId }) {
+  const response = await fetch(`${URL}/api/project/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    },
+    body: JSON.stringify({
+      name,
+      description,
+      orgId,
+    }),
+  }).then((res) => res.json());
+  return response;
+}
+
+export { getMyOrgProjects, getProjectData, addNewMember, removeMember, addNewProject };

@@ -25,10 +25,11 @@ exports.createProject = catchAsync(async function (req, res, next) {
     members: [req.user.id],
   };
   console.log(newProject);
-  const org = await OrgObj.findById(orgId);
+  const org = await OrgObj.findById(orgId)
+    .populate("projects")
   console.log(org);
-  if (org.projects.some((project) => project.equals(newProject.name))) {
-    return next(new Error("Project name already exists in the organization"));
+  if (org.projects.some((project) => project.name == newProject.name)) {
+    return next(new Error(`${newProject.name} already exists`));
   }
   const project = await ProjectObj.create(newProject);
   org.projects.push(mongoose.Types.ObjectId(project._id));

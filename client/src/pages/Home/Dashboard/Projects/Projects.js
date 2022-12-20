@@ -39,7 +39,7 @@ function Projects() {
       {selectedProjectId ? (
         <ProjectDetail />
       ) : (
-        tempProjects && <ProjectList data={projects} />
+        tempProjects && <ProjectList fetchOrgProjects={fetchOrgProjects} data={projects} />
       )}
     </div>
   );
