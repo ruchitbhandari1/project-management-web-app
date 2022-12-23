@@ -3,7 +3,7 @@ import { AuthContext } from "../../../../context/AuthProvider";
 import { useContext, useState, useEffect, useCallback } from "react";
 import { getProjectData } from "../../../../Fetch/Projects";
 import { Button } from "@material-tailwind/react";
-import Tasks from "./Tasks";
+import Tasks from "./Tasks/Tasks";
 import Members from "./Members/Members";
 
 function ProjectDetail() {
@@ -41,10 +41,7 @@ function ProjectDetail() {
           </h1>
           <hr className="border mt-6 border-gray-400" />
           <div className="flex flex-row p-4">
-            <div className="w-3/5">
-              <h1 className="text-md font-extralight italic pl-3">Tasks</h1>
               <Tasks />
-            </div>
             <div className="w-2/5">
                 <Members data={project} fetchProjectData={fetchProjectData} />
             </div>

@@ -19,6 +19,7 @@ function App() {
           <AuthRoutes />
           <ToastContainer
             position="top-center"
+            autoClose={2000}
             pauseOnFocusLoss={false}
             style={{
               zIndex: 99999,

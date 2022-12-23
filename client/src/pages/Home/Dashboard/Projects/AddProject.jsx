@@ -21,6 +21,10 @@ function AddProject({ fetchOrgProjects }) {
 
   function handleCreate(e) {
     e.preventDefault();
+    if (!name) {
+      toast("Please enter project name", { type: "error" });
+      return;
+    }
     async function createProject() {
       let newProject = {
         name,
@@ -64,6 +68,7 @@ function AddProject({ fetchOrgProjects }) {
               label="Project Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
             <br className="my-2" />
             <Textarea

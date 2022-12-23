@@ -23,7 +23,7 @@ function ProjectList({ data, fetchOrgProjects }) {
               onClick={() => handleProjectClick(project._id)}
               className=" h-32 rounded-md shadow-md bg-white hover:shadow-lg p-4 cursor-pointer"
             >
-              <h1 className="text-black">{project.name}</h1>
+              <h1 className="text-black text-2xl font-bold ">{project.name}</h1>
             </div>
           );
         })}

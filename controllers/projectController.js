@@ -24,10 +24,8 @@ exports.createProject = catchAsync(async function (req, res, next) {
     admin: [req.user.id],
     members: [req.user.id],
   };
-  console.log(newProject);
   const org = await OrgObj.findById(orgId)
     .populate("projects")
-  console.log(org);
   if (org.projects.some((project) => project.name == newProject.name)) {
     return next(new Error(`${newProject.name} already exists`));
   }
@@ -93,7 +91,6 @@ exports.getMyOrgProjects = catchAsync(async function (req, res, next) {
   projects = projects.filter((project) =>
     project.members.some((member) => member.equals(userId))
   );
-  console.log(projects);
   res.status(200).json({
     status: "success",
     data: {
