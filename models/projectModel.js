@@ -21,6 +21,14 @@ const projectSchema = new Schema({
         type: [Schema.Types.ObjectId],
         ref: 'Task',
     },
+    totalTasks: {
+        type: Number,
+        default: 0,
+    },
+    completedTasks: {
+        type: Number,
+        default: 0,
+    },
 })
 
 module.exports = mongoose.model('Project', projectSchema);

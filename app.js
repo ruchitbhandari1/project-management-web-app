@@ -1,6 +1,6 @@
-const express = require('express');
+const app = require('express')();
+const httpServer = require('http').createServer(app);
 const cors = require('cors');
-const http = require('http');
 const authRouter = require('./routes/authRoutes.js')
 const errorHandler = require('./controllers/errorController.js')
 const organizationRouter = require('./routes/organizationRoutes.js')
@@ -8,12 +8,8 @@ const projectRouter = require('./routes/projectRoutes.js')
 const userRouter = require('./routes/userRoutes.js')
 const taskRouter = require('./routes/taskRoutes.js')
 
-
-const app = express();
-const httpServer = http.createServer(app);
-
 app.use(cors());
-app.use(express.json());
+app.use(require('express').json());
 
 app.use('/api/auth', authRouter)
 app.use('/api/org', organizationRouter)

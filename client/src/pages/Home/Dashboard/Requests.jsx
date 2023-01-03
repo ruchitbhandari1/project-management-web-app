@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { useEffect, useState, useCallback } from "react";
 import { acceptRequest, rejectRequest, getRequests } from "../../../Fetch/Organizations";
 import { Button } from "@material-tailwind/react";
+import { socket } from "../../../constants/constants";
 
 function Requests() {
   const { selectedOrgId } = useContext(AuthContext);
@@ -30,6 +31,7 @@ function Requests() {
       if (response.status === "success") {
         fetchRequests();
       }
+      socket.emit("newMember", { orgId: selectedOrgId, userId });
     }
     accept();
   }
@@ -44,6 +46,14 @@ function Requests() {
     reject();
   }
 
+  useEffect(() => {
+    socket.on("newRequest", (data) => {
+      if (data.orgId === selectedOrgId) {
+        fetchRequests();
+      }
+    });
+  }, [fetchRequests, selectedOrgId])
+  
   return (
     <div className="p-0">
       {requests &&

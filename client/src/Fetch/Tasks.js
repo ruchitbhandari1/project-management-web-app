@@ -34,4 +34,15 @@ async function toggleCompleted(taskId){
     return response;
 }
 
-export {getAllTasks, addNewTask, toggleCompleted}
+async function deleteTask(taskId){
+    const response = await fetch(`${URL}/api/task/delete/${taskId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`
+        }
+    }).then(res => res.json())
+    return response
+}
+
+export {getAllTasks, addNewTask, toggleCompleted, deleteTask}

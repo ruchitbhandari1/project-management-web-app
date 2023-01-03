@@ -1,9 +1,9 @@
 import React from "react";
 import { AuthContext } from "../../../../../context/AuthProvider";
 import { useContext, useState, useEffect, useCallback } from "react";
-import { getAllTasks, toggleCompleted } from "../../../../../Fetch/Tasks";
+import { getAllTasks, toggleCompleted, deleteTask } from "../../../../../Fetch/Tasks";
 import AddTask from "./AddTask";
-import { Checkbox } from "@material-tailwind/react";
+import { Checkbox, IconButton } from "@material-tailwind/react";
 import { socket } from "../../../../../constants/constants";
 
 function Tasks() {
@@ -65,6 +65,15 @@ function Tasks() {
     socket.emit("update", "update");
   }
 
+  async function handleDelete(event, taskId) {
+    event.stopPropagation();
+    setTasks((prev) => {
+      return prev.filter((task) => task._id !== taskId);
+    })
+    await deleteTask(taskId);
+    socket.emit("delete", "delete");
+  }
+
   return (
     <div className="w-3/5">
       <div className="flex flex-row justify-between items-center">
@@ -78,7 +87,7 @@ function Tasks() {
               <div
                 key={task.name}
                 onClick={() => handleChange(task._id)}
-                className="bg-white cursor-pointer hover:bg-gray-100 active:bg-gray-200  items-center flex flex-row rounded-md shadow-md p-2 m-1"
+                className="bg-white cursor-pointer hover:bg-gray-100 active:bg-gray-200  items-center flex flex-row justify-between rounded-md shadow-md p-2 m-1"
               >
                 {/* <Checkbox
                   defaultChecked={task.completed}
@@ -91,6 +100,9 @@ function Tasks() {
                 >
                   {task.name}
                 </h1>
+                <IconButton onClick={(e) => handleDelete(e, task._id)} size="sm" variant="text" color="gray" >
+                  X
+                </IconButton>
               </div>
             );
           })}

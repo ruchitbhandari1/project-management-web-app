@@ -6,11 +6,10 @@ const httpServer = require("./app.js");
 const io = require("socket.io")(httpServer, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
   },
 })
 
-io.of("/api/socket").on("connection", (socket) => {
+io.on("connection", (socket) => {
   socket.on("insert", (data) => {
     socket.broadcast.emit("insert", data);
   })
@@ -19,6 +18,13 @@ io.of("/api/socket").on("connection", (socket) => {
   })
   socket.on("delete", (data) => {
     socket.broadcast.emit("delete", data);
+  })
+  socket.on("joinOrg", (data) => {
+    // find org by id
+    socket.broadcast.emit("newRequest", data);
+  })
+  socket.on("newMember", (data) => {
+    socket.broadcast.emit("newMember", data);
   })
 })
 

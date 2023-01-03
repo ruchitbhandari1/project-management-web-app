@@ -7,11 +7,12 @@ import CreateOrg from "./CreateOrg";
 import { useCallback } from "react";
 import { AuthContext } from "../../../context/AuthProvider";
 import { useContext } from "react";
+import { socket } from "../../../constants/constants";
 
 function Organizations() {
   const [open, setOpen] = useState(true);
   const [obj, setObj] = useState([]);
-  const { setSelectedOrgId } = useContext(AuthContext);
+  const { setSelectedOrgId, user } = useContext(AuthContext);
 
   const fetchOrgs = useCallback(async function () {
     const response = await getMyOrgs();
@@ -24,7 +25,16 @@ function Organizations() {
 
   function handleSelectOrg(orgId) {
     setSelectedOrgId(orgId);
+    console.log("Selected Org Id:", orgId);
   }
+
+  useEffect(() => {
+    socket.on("newMember", (data) => {
+      if (data.userId === user._id) {
+        fetchOrgs();
+      }
+    })
+  })
 
   return (
     <div className="mx-3 my-2">

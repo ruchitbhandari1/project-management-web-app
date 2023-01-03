@@ -3,6 +3,8 @@ import { Button, Dialog, DialogHeader, DialogBody, DialogFooter, Input } from '@
 import { getOrgs, joinOrg } from '../../../Fetch/Organizations';
 import { AuthContext } from '../../../context/AuthProvider';
 import { useContext } from 'react';
+import { useCallback } from 'react';
+import { socket } from '../../../constants/constants';
 
 function JoinOrg() {
 
@@ -11,10 +13,10 @@ function JoinOrg() {
   const [search, setSearch] = useState('');
   const [orgs, setOrgs] = useState([]);
 
-  async function fetchOrgs() {
+  const fetchOrgs = useCallback(async function ()  {
     const response = await getOrgs(search);
     setOrgs(response.data.orgs);
-  }
+  }, [search])
   
   function handleSearch(e) {
     e.preventDefault();
@@ -25,6 +27,7 @@ function JoinOrg() {
     async function fetchJoinOrg(){
       await joinOrg(orgId);
       fetchOrgs();
+      socket.emit('joinOrg', {orgId, userId: user._id});
     }
     fetchJoinOrg();
   }
@@ -38,7 +41,10 @@ function JoinOrg() {
   return (
     <>
       <Button
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          setOpen(!open);
+          fetchOrgs();
+        }}
         variant="gradient"
         color="green"
         fullWidth

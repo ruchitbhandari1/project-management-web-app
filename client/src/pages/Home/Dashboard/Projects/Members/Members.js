@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Button } from "@material-tailwind/react";
+import { Avatar, Button, Tooltip } from "@material-tailwind/react";
 import { AuthContext } from '../../../../../context/AuthProvider'
 import { useContext, useState, useCallback, useEffect } from 'react'
 import AddMember from './AddMember';
@@ -25,13 +25,17 @@ function Members({data, fetchProjectData}) {
         {members &&
           members.map((member) => {
             return (
-              <Avatar
-                key={member.name}
-                src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1671459684~exp=1671460284~hmac=1b6e1e31cfe8fec4972c389de03755114490b6f37d581fb9e5e466688632ca6a"
-                alt="avatar"
-                variant="circular"
-                className="w-12 h-12"
-              />
+              <Tooltip
+                content={member.name}
+              >
+                <Avatar
+                  key={member.name}
+                  src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1671459684~exp=1671460284~hmac=1b6e1e31cfe8fec4972c389de03755114490b6f37d581fb9e5e466688632ca6a"
+                  alt="avatar"
+                  variant="circular"
+                  className="w-12 h-12"
+                />
+              </Tooltip>
             );
           })}
       </div>

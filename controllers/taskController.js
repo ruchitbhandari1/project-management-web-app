@@ -24,6 +24,7 @@ exports.create = catchAsync(async function(req, res, next){
     const task = await TaskObj.create(newTask);
     const project = await ProjectObj.findById(projectId)
     project.tasks.push(mongoose.Types.ObjectId(task._id))
+    project.totalTasks += 1
     await project.save();
     res.status(201).json({
         status: "success",
@@ -36,6 +37,10 @@ exports.delete = catchAsync(async function(req, res, next){
     const task = await TaskObj.findById(taskId)
     const project = await ProjectObj.findById(task.projectId)
     project.tasks = project.tasks.filter((curr) => !curr.equals(taskId));
+    project.totalTasks -= 1
+    if(task.completed){
+        project.completedTasks -= 1
+    }
     await project.save()
     await TaskObj.findByIdAndDelete(taskId);
     res.status(202).json({
@@ -47,8 +52,16 @@ exports.delete = catchAsync(async function(req, res, next){
 exports.toggleCompleted = catchAsync(async function(req, res, next){
     const taskId = req.params.taskId
     const task = await TaskObj.findById(taskId)
-    task.completed = !task.completed
+    const project = await ProjectObj.findById(task.projectId)
+    if(task.completed){
+        task.completed = false
+        project.completedTasks -= 1
+    }else{
+        task.completed = true
+        project.completedTasks += 1
+    }
     await task.save()
+    await project.save()
     res.status(200).json({
         status: "success",
         data: {}
