@@ -9,9 +9,12 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 import { createOrg } from "../../../Fetch/Organizations";
+import { useContext } from 'react';
+import { AuthContext } from "../../../context/AuthProvider";
 
 function CreateOrg({ fetchOrgs}) {
 
+  const {setSelectedOrgId} = useContext(AuthContext)
   const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -19,10 +22,12 @@ function CreateOrg({ fetchOrgs}) {
     e.preventDefault();
     if (!name) return;
     async function fetchCreateOrg() {
-      await createOrg(name);
+      const res = await createOrg(name);
+      console.log(res.data.org);
       setOpen(!open);
       setName("");
       fetchOrgs();
+      setSelectedOrgId(res.data.org._id);
     }
     fetchCreateOrg();
   }

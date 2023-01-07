@@ -67,4 +67,14 @@ async function addNewProject({ name, description, orgId }) {
   return response;
 }
 
-export { getMyOrgProjects, getProjectData, addNewMember, removeMember, addNewProject };
+async function deleteProject(projectId){
+  const response = await fetch(`${URL}/api/project/delete/${projectId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`
+  }}).then((res) => res.json());
+  return response;
+}
+
+export { getMyOrgProjects, getProjectData, addNewMember, removeMember, addNewProject, deleteProject };

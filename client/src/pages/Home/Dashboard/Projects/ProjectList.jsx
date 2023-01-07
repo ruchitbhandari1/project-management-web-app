@@ -5,9 +5,11 @@ import AddProject from "./AddProject";
 import { getMyOrgProjects } from "../../../../Fetch/Projects";
 import { useState } from "react";
 import { Progress } from "@material-tailwind/react";
+import { socket } from "../../../../constants/constants";
 
 function ProjectList() {
-  const { selectedOrgId, setSelectedProjectId } = useContext(AuthContext);
+  const { selectedOrgId, setSelectedProjectId, selectedProjectId } =
+    useContext(AuthContext);
   const [projects, setProjects] = useState([])
 
   function handleProjectClick(projectId) {
@@ -23,6 +25,12 @@ function ProjectList() {
   useEffect(() => {
     fetchOrgProjects();
   }, [fetchOrgProjects]);
+
+  useEffect(() => {
+    socket.on("projectDeleted", (projectId) => {
+      fetchOrgProjects();
+    });
+  })
 
   return (
     <div>

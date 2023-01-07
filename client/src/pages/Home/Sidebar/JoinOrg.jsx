@@ -8,7 +8,7 @@ import { socket } from '../../../constants/constants';
 
 function JoinOrg() {
 
-  const {user} = useContext(AuthContext);
+  const { user, setSelectedOrgId } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [orgs, setOrgs] = useState([]);
@@ -28,6 +28,7 @@ function JoinOrg() {
       await joinOrg(orgId);
       fetchOrgs();
       socket.emit('joinOrg', {orgId, userId: user._id});
+      setSelectedOrgId(orgId);
     }
     fetchJoinOrg();
   }

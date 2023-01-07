@@ -23,6 +23,7 @@ exports.createProject = catchAsync(async function (req, res, next) {
     description: req.body.description,
     admin: [req.user.id],
     members: [req.user.id],
+    orgId,
   };
   const org = await OrgObj.findById(orgId)
     .populate("projects")
@@ -39,6 +40,23 @@ exports.createProject = catchAsync(async function (req, res, next) {
     },
   });
 });
+
+exports.deleteProject = catchAsync(async function (req, res, next) {
+  const userId = req.user.id;
+  const projectId = req.params.projectId;
+  const project = await ProjectObj.findById(projectId).populate("tasks")
+  const org = await OrgObj.findById(project.orgId);
+  org.projects = org.projects.filter((project) => !project.equals(projectId));
+  await org.save();
+  project.tasks.forEach(async (task) => {
+    await task.deleteOne();
+  })
+  await project.deleteOne();
+  res.status(204).json({
+    status: "success",
+    data: null,
+  })
+})
 
 exports.addMember = catchAsync(async function (req, res, next) {
   const userId = req.user.id;

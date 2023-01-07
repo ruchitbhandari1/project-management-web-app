@@ -26,6 +26,9 @@ io.on("connection", (socket) => {
   socket.on("newMember", (data) => {
     socket.broadcast.emit("newMember", data);
   })
+  socket.on("projectDeleted", (data) => {
+    socket.broadcast.emit("projectDeleted", data);
+  });
 })
 
 // const DATABASE = process.env.DATABASE;

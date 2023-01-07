@@ -12,7 +12,7 @@ import { socket } from "../../../constants/constants";
 function Organizations() {
   const [open, setOpen] = useState(true);
   const [obj, setObj] = useState([]);
-  const { setSelectedOrgId, user } = useContext(AuthContext);
+  const { setSelectedOrgId, user, selectedOrgId } = useContext(AuthContext);
 
   const fetchOrgs = useCallback(async function () {
     const response = await getMyOrgs();
@@ -54,7 +54,7 @@ function Organizations() {
                 key={index}
                 variant="text"
                 onClick={() => handleSelectOrg(item._id)}
-                className="px-4 text-left bg-gray-50 active:bg-gray-300 block w-full text-black hover:bg-gray-300 py-2"
+                className={`px-4 text-left bg-gray-50 active:bg-gray-200 block w-full text-black hover:bg-gray-200 py-2 ${selectedOrgId === item._id ? "bg-gray-300" : ""}`}
               >
                 {item.name}
               </Button>

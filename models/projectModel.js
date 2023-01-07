@@ -29,6 +29,10 @@ const projectSchema = new Schema({
         type: Number,
         default: 0,
     },
+    orgId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Organization',
+    }
 })
 
 module.exports = mongoose.model('Project', projectSchema);
