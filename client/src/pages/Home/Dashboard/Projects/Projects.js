@@ -10,7 +10,7 @@ function Projects() {
 
 
   return (
-    <div className="bg-gray-50">
+    <div className="">
       {selectedProjectId ? (
         <ProjectDetail />
       ) : (

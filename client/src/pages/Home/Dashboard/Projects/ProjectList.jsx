@@ -6,6 +6,7 @@ import { getMyOrgProjects } from "../../../../Fetch/Projects";
 import { useState } from "react";
 import { Progress } from "@material-tailwind/react";
 import { socket } from "../../../../constants/constants";
+import no_results from "../../../../assets/illustrations/no_results.jpg";
 
 function ProjectList() {
   const { selectedOrgId, setSelectedProjectId, selectedProjectId } =
@@ -38,7 +39,7 @@ function ProjectList() {
         <AddProject fetchOrgProjects={fetchOrgProjects} />
       </div>
       <div className="grid grid-cols-2 gap-4 px-4 pb-4">
-        {projects.map((project) => {
+        {projects && projects.map((project) => {
           return (
             <div
               key={project._id}
@@ -50,6 +51,10 @@ function ProjectList() {
             </div>
           );
         })}
+      </div>
+      <div className="flex justify-center">
+
+        {!projects.length && <img className="h-96" src={no_results} alt="no results" />}
       </div>
     </div>
   );
