@@ -1,4 +1,5 @@
-const app = require('express')();
+const express = require('express');
+const app = express()
 const httpServer = require('http').createServer(app);
 const cors = require('cors');
 const authRouter = require('./routes/authRoutes.js')
@@ -16,6 +17,8 @@ app.use('/api/org', organizationRouter)
 app.use('/api/project', projectRouter)
 app.use('/api/user', userRouter)
 app.use('/api/task', taskRouter)
+
+app.use(express.static(path.join(__dirname, "./client/build")));
 
 app.all("*", (req, res, next) => {
     res.send("Invalid route");
