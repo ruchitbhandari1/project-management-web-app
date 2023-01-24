@@ -20,6 +20,12 @@ function Login() {
     return (
       <div className="w-96 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <h2 className="mb-4 text-center text-3xl font-bold">Login</h2>
+        <div className='my-2'>
+          <h2 className="text-center text-sm text-gray-600">
+            email:- test@gmail.com
+          </h2>
+          <h2 className="text-center text-sm text-gray-600">password:- test</h2>
+        </div>
         <form>
           <Input
             type="email"

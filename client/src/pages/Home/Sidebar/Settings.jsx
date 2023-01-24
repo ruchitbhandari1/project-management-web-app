@@ -9,9 +9,6 @@ function Settings() {
 
   return (
     <div className="flex justify-between p-2 gap-x-2">
-      <Button fullWidth variant="gradient">
-        Settings
-      </Button>
       <Button fullWidth variant="text" onClick={logout} className="bg-gray-300">
         Logout
       </Button>

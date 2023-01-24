@@ -7,7 +7,6 @@ import {
   TabPanel,
 } from "@material-tailwind/react";
 import Requests from "./Requests";
-import Details from "./Details";
 import Projects from "./Projects/Projects";
 import { AuthContext } from "../../../context/AuthProvider";
 import { useContext, useState } from "react";
@@ -27,11 +26,6 @@ function TopBar() {
       label: "Requests",
       value: "requests",
       component: <Requests />,
-    },
-    {
-      label: "Details",
-      value: "details",
-      component: <Details />,
     },
   ];
 
