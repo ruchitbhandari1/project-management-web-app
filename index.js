@@ -31,8 +31,8 @@ io.on("connection", (socket) => {
   });
 })
 
-// const DATABASE = process.env.DATABASE;
-const DATABASE = process.env.DATABASE_LOCAL;
+const DATABASE = process.env.DATABASE;
+// const DATABASE = process.env.DATABASE_LOCAL;
 
 mongoose.set('strictQuery', true);
 mongoose
