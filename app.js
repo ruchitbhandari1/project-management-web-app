@@ -18,7 +18,6 @@ app.use('/api/project', projectRouter)
 app.use('/api/user', userRouter)
 app.use('/api/task', taskRouter)
 
-app.use(express.static(path.join(__dirname, "./client/build")));
 
 app.all("*", (req, res, next) => {
     res.send("Invalid route");
